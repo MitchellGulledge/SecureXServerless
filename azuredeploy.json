@@ -77,14 +77,14 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Name of the Virtual WAN resource Meraki should target"
+                "description": "SecureX Client Identifier"
             }
         },
         "securex_client_password": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Do you want to postpone changes needed to the IPSec tunnels during maintenance hours?  Note: Automation failover will continue, this feature is specific to changes needed for the IPSec profile on the Meraki device."
+                "description": "SecureX Password"
             }
         }
     },
@@ -145,11 +145,11 @@
                         },
                         {
                             "name": "securex_client_id",
-                            "value": "[parameters('vwan_name')]"
+                            "value": "[parameters('securex_client_id')]"
                         },                                                                 
                         {
                             "name": "securex_client_password",
-                            "value": "[parameters('use_maintenance_window')]"
+                            "value": "[parameters('securex_client_password')]"
                         }
                     ],
                     "LinuxFxVersion": "PYTHON|3.8"
