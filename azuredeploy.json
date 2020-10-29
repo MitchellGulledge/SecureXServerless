@@ -77,14 +77,14 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "client ID for the secureX dashboard"
+                "description": "SecureX Client Identifier"
             }
         },
         "securex_client_password": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "secureX password"
+                "description": "SecureX Password"
             }
         }
     },
