@@ -77,21 +77,21 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "SecureX Client Identifier"
+                "description": "client ID for the secureX dashboard"
             }
         },
         "securex_client_password": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "SecureX Password"
+                "description": "secureX password"
             }
-        }
+        
     },
     "variables": {
         "hostingPlanName": "[parameters('function_app_name')]",
         "storageAccountName": "[concat('storage', uniquestring(resourceGroup().id))]",
-        "functionPackage": "https://github.com/MitchellGulledge/SecureXServerless/raw/master/MerakiFunction.zip"
+        "functionPackage": "https://github.com/MitchellGulledge/Meraki-vWAN/raw/master/MerakiFunction.zip"
     },
     "resources": [
         {
