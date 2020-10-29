@@ -2,7 +2,7 @@ import logging
 import os
 import meraki
 import requests
-import shared
+from __app__.shared_code import shared
 
 
 _AZURE_MGMT_URL = "https://management.azure.com"
