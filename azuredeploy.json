@@ -86,7 +86,7 @@
             "metadata": {
                 "description": "secureX password"
             }
-        
+        }
     },
     "variables": {
         "hostingPlanName": "[parameters('function_app_name')]",
@@ -205,4 +205,4 @@
     ],
     "outputs": {
     }
-}}
+}
