@@ -91,7 +91,7 @@
     "variables": {
         "hostingPlanName": "[parameters('function_app_name')]",
         "storageAccountName": "[concat('storage', uniquestring(resourceGroup().id))]",
-        "functionPackage": "https://github.com/MitchellGulledge/SecureXServerless/raw/master/MerakiFunction.zip"
+        "functionPackage": "https://github.com/MitchellGulledge/SecureXServerless/raw/main/MerakiFunction.zip"
     },
     "resources": [
         {
