@@ -2,10 +2,20 @@
   "scriptFile": "__init__.py",
   "bindings": [
     {
-      "name": "MerakiTimer",
-      "type": "timerTrigger",
+      "authLevel": "function",
+      "type": "httpTrigger",
       "direction": "in",
-      "schedule": "0 */5 * * * *"
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ],
+      "route": "{*route}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
     }
   ]
 }
