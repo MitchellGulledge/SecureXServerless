@@ -6,7 +6,7 @@ certifi==2020.6.20
 chardet==3.0.4
 idna==2.10
 IPy==1.0
-meraki==1.2.0
+meraki
 multidict==5.0.0
 requests==2.24.0
 typing-extensions==3.7.4.3
