@@ -1,6 +1,5 @@
 import logging
 import azure.functions as func
-from azf_wsgi import AzureFunctionsWsgi
 from ..FlaskApp.app import app as application
 
 
