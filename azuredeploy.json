@@ -11,6 +11,18 @@
                 "description": "Specify the name of the function application (no special characters allowed)"
             }
         },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_RAGRS"
+            ],
+            "metadata": {
+                "description": "Storage Account type"
+            }
+        },
         "function_location": {
             "type": "string",
             "allowedValues": [
