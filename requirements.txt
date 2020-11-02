@@ -1,14 +1,14 @@
 aiohttp==3.7.2
 async-timeout==3.0.1
 attrs==20.2.0
-Authlib
+#Authlib
 azure-functions
 bundlebuilder @ git+https://github.com/CiscoSecurity/tr-05-ctim-bundle-builder.git@9d9f10a75cd57dd9e74dcbd34eda988ab241959c
 certifi
 cffi
 chardet
 click
-cryptography
+#cryptography
 Flask>=1.0,<=1.1.2
 idna
 inflection
