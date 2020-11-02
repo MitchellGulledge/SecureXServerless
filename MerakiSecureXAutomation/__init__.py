@@ -1,6 +1,6 @@
 import logging
 import azure.functions as func
-from ..FlaskApp.app import app as application
+#from ..FlaskApp.app import app as application
 
 
 # def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
