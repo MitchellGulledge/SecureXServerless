@@ -193,6 +193,7 @@ def create_update_integration_module_instance(token, type_id, appurl, orgid, api
     }
 
     if update_id:
+        del payload["visibility"]
         ret = requests.patch(url + "/" + update_id, headers=headers, json=payload)
     else:
         ret = requests.post(url, headers=headers, json=payload)
