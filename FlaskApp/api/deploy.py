@@ -215,6 +215,7 @@ def deploy():
         return jsonify({'status': 'error'})
 
     app_url = str(request.url)
+    logging.info(app_url)
     o = urlparse(request.base_url)
 
     # Get SecureX Token
