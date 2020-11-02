@@ -1,5 +1,5 @@
-from authlib.jose import jwt
-from authlib.jose.errors import JoseError
+# from authlib.jose import jwt
+# from authlib.jose.errors import JoseError
 from flask import request, current_app, jsonify
 from werkzeug.exceptions import Forbidden, BadRequest
 import base64
@@ -19,7 +19,7 @@ def get_jwt():
         scheme, token = request.headers['Authorization'].split()
         assert scheme.lower() == 'basic'
         return base64.b64decode(token).decode("UTF-8")
-    except (KeyError, ValueError, AssertionError, JoseError):
+    except (KeyError, ValueError, AssertionError):
         raise Forbidden('Invalid Bearer Token.')
 
 
