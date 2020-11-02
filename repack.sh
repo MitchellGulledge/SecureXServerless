@@ -1,4 +1,3 @@
-rm MerakiSecureXAutomation/*.log
 rm *.zip
 rm -rf .python_packages
 pip install --target=./.python_packages/lib/site-packages -r requirements.txt
