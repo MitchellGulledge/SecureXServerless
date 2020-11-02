@@ -9,6 +9,7 @@ import logging
 from urllib.parse import urlparse
 from .. import config
 
+
 deploy_api = Blueprint('deploy', __name__)
 
 
@@ -239,12 +240,12 @@ def deploy():
         # Update Integration Module Instance in SecureX
         mod_inst = create_update_integration_module_instance(token, mod_type["id"], app_url, MerakiConfig.org_id,
                                                              MerakiConfig.api_key, update_id=cur_inst[0]["id"])
-        logging.info("(Existing) Module Instance ID=" + str(mod_inst["id"]))
+        logging.info("(Existing) Module Instance ID=" + str(mod_inst))
     else:
         # Create Integration Module Instance in SecureX
         mod_inst = create_update_integration_module_instance(token, mod_type["id"], app_url, MerakiConfig.org_id,
                                                              MerakiConfig.api_key)
-        logging.info("(New) Module Instance ID=" + str(mod_inst["id"]))
+        logging.info("(New) Module Instance ID=" + str(mod_inst))
 
 
     return redirect("https://securex.us.security.cisco.com")
