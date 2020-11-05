@@ -133,3 +133,4 @@ dmypy.json
 .python_packages
 .DS_Store
 old/
+zappa_settings.json
