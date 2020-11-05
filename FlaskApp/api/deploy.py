@@ -8,7 +8,7 @@ import sys
 import logging
 from urllib.parse import urlparse
 from .. import config
-
+from ..shared_code import securex
 
 deploy_api = Blueprint('deploy', __name__)
 
@@ -28,12 +28,7 @@ class AzureConfig:
     subscription_id = os.environ.get('subscription_id', None)
 
 
-class SecureXConfig:
-    securex_client_id = os.environ.get('securex_client_id')
-    securex_client_password = os.environ.get('securex_client_password')
-    if not securex_client_id or not securex_client_password:
-        logging.error("Error: you must include the SecureX Token ID and SecureX Token Secret in order to continue")
-        exit(1)
+SecureX = securex.SecureXConfig()
 
 
 def read_file_all(in_filename):
@@ -44,26 +39,9 @@ def read_file_all(in_filename):
         return in_file.read()
 
 
-def get_access_token(client_id, client_pw):
-    headers = {'Content-Type': 'application/x-www-form-urlencoded',
-               'Accept': 'application/json'}
-    data = {'grant_type': 'client_credentials'}
-    url = 'https://visibility.amp.cisco.com/iroh/oauth2/token'
-    response = requests.post(url, data=data, headers=headers, auth=(client_id, client_pw))
-
-    if response.ok:
-        return response.json()
-    else:
-        return None
-
-
 def get_integration_module_type(token, name_filter=None):
     url = "https://visibility.amp.cisco.com/iroh/iroh-int/module-type"
-    headers = {'Content-Type': 'application/json',
-               'Accept': 'application/json',
-               'Authorization': 'Bearer ' + token}
-
-    ret = requests.get(url, headers=headers)
+    ret = requests.get(url, headers=SecureXConfig.headers)
     rjson = ret.json()
 
     if name_filter:
@@ -78,9 +56,6 @@ def get_integration_module_type(token, name_filter=None):
 
 def create_update_integration_module_type(token, update_id=None):
     url = "https://visibility.amp.cisco.com/iroh/iroh-int/module-type"
-    headers = {'Content-Type': 'application/json',
-               'Accept': 'application/json',
-               'Authorization': 'Bearer ' + token}
     payload = {
         "title": "Meraki Dashboard Test",
         "default_name": "Meraki Dashboard",
@@ -150,20 +125,16 @@ def create_update_integration_module_type(token, update_id=None):
     }
 
     if update_id:
-        ret = requests.patch(url + "/" + update_id, headers=headers, json=payload)
+        ret = requests.patch(url + "/" + update_id, headers=SecureXConfig.headers, json=payload)
     else:
-        ret = requests.post(url, headers=headers, json=payload)
+        ret = requests.post(url, headers=SecureXConfig.headers, json=payload)
 
     return ret.json()
 
 
 def get_integration_module_instance(token, name_filter=None):
     url = "https://visibility.amp.cisco.com/iroh/iroh-int/module-instance"
-    headers = {'Content-Type': 'application/json',
-               'Accept': 'application/json',
-               'Authorization': 'Bearer ' + token}
-
-    ret = requests.get(url, headers=headers)
+    ret = requests.get(url, headers=SecureXConfig.headers)
     rjson = ret.json()
 
     if name_filter:
@@ -178,9 +149,6 @@ def get_integration_module_instance(token, name_filter=None):
 
 def create_update_integration_module_instance(token, type_id, appurl, orgid, apikey, update_id=None):
     url = "https://visibility.amp.cisco.com/iroh/iroh-int/module-instance"
-    headers = {'Content-Type': 'application/json',
-               'Accept': 'application/json',
-               'Authorization': 'Bearer ' + token}
     payload = {
         "name": "Meraki Dashboard",
         "module_type_id": type_id,
@@ -194,9 +162,9 @@ def create_update_integration_module_instance(token, type_id, appurl, orgid, api
 
     if update_id:
         del payload["visibility"]
-        ret = requests.patch(url + "/" + update_id, headers=headers, json=payload)
+        ret = requests.patch(url + "/" + update_id, headers=SecureXConfig.headers, json=payload)
     else:
-        ret = requests.post(url, headers=headers, json=payload)
+        ret = requests.post(url, headers=SecureXConfig.headers, json=payload)
 
     return ret.json()
 
@@ -214,13 +182,9 @@ def deploy():
         logging.error("Could not find Meraki Organization Name.")
         return jsonify({'status': 'error'})
 
-    app_url = str(request.url)
+    app_url = str(request.url).replace("/deploy", "/")
     logging.info(app_url)
     o = urlparse(request.base_url)
-
-    # Get SecureX Token
-    bearer_payload = get_access_token(SecureXConfig.securex_client_id, SecureXConfig.securex_client_password)
-    token = bearer_payload["access_token"]
 
     # See if module already exists...
     cur_mod = get_integration_module_type(token, "Meraki Dashboard")
