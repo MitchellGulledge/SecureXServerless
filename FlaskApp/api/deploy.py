@@ -28,7 +28,7 @@ class AzureConfig:
     subscription_id = os.environ.get('subscription_id', None)
 
 
-SecureX = securex.SecureXConfig()
+SecureXConfig = securex.SecureXConfig()
 
 
 def read_file_all(in_filename):
@@ -187,29 +187,31 @@ def deploy():
     o = urlparse(request.base_url)
 
     # See if module already exists...
-    cur_mod = get_integration_module_type(token, "Meraki Dashboard")
+    cur_mod = get_integration_module_type(SecureXConfig.token, "Meraki Dashboard")
     if len(cur_mod) > 0:
         # Update Integration Module Type in SecureX
-        mod_type = create_update_integration_module_type(token, update_id=cur_mod[0]["id"])
+        mod_type = create_update_integration_module_type(SecureXConfig.token, update_id=cur_mod[0]["id"])
         logging.info("(Existing) Module Type ID=" + str(mod_type["id"]))
     else:
         # Create Integration Module Type in SecureX
-        mod_type = create_update_integration_module_type(token)
+        mod_type = create_update_integration_module_type(SecureXConfig.token)
         logging.info("(New) Module Type ID=" + str(mod_type["id"]))
 
     if o.hostname == "localhost":
         return jsonify({"status": "error: not creating or update module instance since URL is from localhost"})
 
     # See if instance already exists...
-    cur_inst = get_integration_module_instance(token, "Meraki Dashboard")
+    cur_inst = get_integration_module_instance(SecureX.token, "Meraki Dashboard")
     if len(cur_inst) > 0:
         # Update Integration Module Instance in SecureX
-        mod_inst = create_update_integration_module_instance(token, mod_type["id"], app_url, MerakiConfig.org_id,
+        mod_inst = create_update_integration_module_instance(SecureXConfig.token, mod_type["id"], app_url,
+                                                             MerakiConfig.org_id,
                                                              MerakiConfig.api_key, update_id=cur_inst[0]["id"])
         logging.info("(Existing) Module Instance ID=" + str(mod_inst))
     else:
         # Create Integration Module Instance in SecureX
-        mod_inst = create_update_integration_module_instance(token, mod_type["id"], app_url, MerakiConfig.org_id,
+        mod_inst = create_update_integration_module_instance(SecureXConfig.token, mod_type["id"], app_url,
+                                                             MerakiConfig.org_id,
                                                              MerakiConfig.api_key)
         logging.info("(New) Module Instance ID=" + str(mod_inst))
 
