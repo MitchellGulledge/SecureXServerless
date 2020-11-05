@@ -12,13 +12,13 @@ class MerakiConfig:
         self.org_id = None
         if not self.api_key or not self.org_name:
             logging.error("Error: you must include the Meraki API Key and Organization Name in order to continue")
-            exit(1)
-        self.mdashboard = meraki.DashboardAPI(self.api_key, print_console=False, suppress_logging=True, output_log=False,
-                                              caller=config.meraki_user_agent)
-        result_org_id = self.mdashboard.organizations.getOrganizations()
-        for x in result_org_id:
-            if x['name'] == self.org_name:
-                self.org_id = x['id']
+        else:
+            self.mdashboard = meraki.DashboardAPI(self.api_key, print_console=False, suppress_logging=True, output_log=False,
+                                                  caller=config.meraki_user_agent)
+            result_org_id = self.mdashboard.organizations.getOrganizations()
+            for x in result_org_id:
+                if x['name'] == self.org_name:
+                    self.org_id = x['id']
 
     def find_meraki_client(self, client_mac=None, client_ip=None):
         net_client = None

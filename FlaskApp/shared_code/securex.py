@@ -1,28 +1,32 @@
 import requests
 import os
 from bundlebuilder.session import Session
+import logging
 
 
 class SecureXConfig:
     def __init__(self):
         self.securex_client_id = os.environ.get('securex_client_id')
         self.securex_client_password = os.environ.get('securex_client_password')
+        self.token = None
+        self.headers = {}
+        self.session = None
         if not self.securex_client_id or not self.securex_client_password:
             logging.error("Error: you must include the SecureX Token ID and SecureX Token Secret in order to continue")
-            exit(1)
-        # Get SecureX Token
-        bearer_payload = self.get_access_token()
-        self.token = bearer_payload["access_token"]
-        self.headers = {'Content-Type': 'application/json',
-                   'Accept': 'application/json',
-                   'Authorization': 'Bearer ' + self.token}
-        self.session = Session(
-            external_id_prefix='meraki-tr-module',
-            source='Meraki Threat Response Module',
-            source_uri=(
-                'https://github.com/MitchellGulledge/SecureXServerless/'
-            ),
-        )
+        else:
+            # Get SecureX Token
+            bearer_payload = self.get_access_token()
+            self.token = bearer_payload["access_token"]
+            self.headers = {'Content-Type': 'application/json',
+                       'Accept': 'application/json',
+                       'Authorization': 'Bearer ' + self.token}
+            self.session = Session(
+                external_id_prefix='meraki-tr-module',
+                source='Meraki Threat Response Module',
+                source_uri=(
+                    'https://github.com/MitchellGulledge/SecureXServerless/'
+                ),
+            )
 
     def get_access_token(self):
         headers = {'Content-Type': 'application/x-www-form-urlencoded',
