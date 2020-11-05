@@ -32,9 +32,9 @@ enrich_api = Blueprint('enrich', __name__)
 get_observables = partial(get_json, schema=ObservableSchema(many=True))
 
 
-def find_observables():
+def find_observables(auth_creds):
     securex_config = securex.SecureXConfig()
-    meraki_config = meraki.MerakiConfig()
+    meraki_config = meraki.MerakiConfig(auth=auth_creds)
     json_data = request.json
     # [{'value': '190.168.1.203', 'type': 'ip'}]
     # [{'value': 'db8c0fc8427546ed54664fba24bdc7aa335eedb34b21c0d9a030dbc4f2bd7aee', 'type': 'sha256'}]
@@ -251,7 +251,7 @@ def deliberate_observables():
 
 @enrich_api.route('/observe/observables', methods=['POST'])
 def observe_observables():
-    return jsonify_data(find_observables())
+    return jsonify_data(find_observables(get_jwt()))
 
 
 @enrich_api.route('/refer/observables', methods=['POST'])
