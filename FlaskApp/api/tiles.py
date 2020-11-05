@@ -449,7 +449,6 @@ def get_tile_data():
     }
 
     if tile_extras:
-        print({**tile_base, **tile_extras})
         return jsonify_data({**tile_base, **tile_extras})
     else:
         return jsonify_data(tile_base)
