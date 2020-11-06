@@ -6,19 +6,29 @@ import logging
 
 
 class MerakiConfig:
-    def __init__(self):
-        self.api_key = os.environ.get('meraki_api_key', '').lower()
-        self.org_name = os.environ.get('meraki_org_name')
-        self.org_id = None
-        if not self.api_key or not self.org_name:
-            logging.error("Error: you must include the Meraki API Key and Organization Name in order to continue")
-        else:
-            self.mdashboard = meraki.DashboardAPI(self.api_key, print_console=False, suppress_logging=True, output_log=False,
+    def __init__(self, auth=None):
+        if auth:
+            auth_list = auth.split(":")
+            self.org_id = auth_list[0]
+            self.org_name = "Unspecified"
+            self.api_key = auth_list[1]
+
+            self.mdashboard = meraki.DashboardAPI(self.api_key, print_console=False, suppress_logging=True,
+                                                  output_log=False,
                                                   caller=config.meraki_user_agent)
-            result_org_id = self.mdashboard.organizations.getOrganizations()
-            for x in result_org_id:
-                if x['name'] == self.org_name:
-                    self.org_id = x['id']
+        else:
+            self.api_key = os.environ.get('meraki_api_key', '').lower()
+            self.org_name = os.environ.get('meraki_org_name')
+            self.org_id = None
+            if not self.api_key or not self.org_name:
+                logging.error("Error: you must include the Meraki API Key and Organization Name in order to continue")
+            else:
+                self.mdashboard = meraki.DashboardAPI(self.api_key, print_console=False, suppress_logging=True, output_log=False,
+                                                      caller=config.meraki_user_agent)
+                result_org_id = self.mdashboard.organizations.getOrganizations()
+                for x in result_org_id:
+                    if x['name'] == self.org_name:
+                        self.org_id = x['id']
 
     def find_meraki_client(self, client_mac=None, client_ip=None):
         net_client = None
