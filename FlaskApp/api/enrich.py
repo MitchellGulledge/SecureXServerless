@@ -256,8 +256,7 @@ def observe_observables():
 
 @enrich_api.route('/refer/observables', methods=['POST'])
 def refer_observables():
-    _ = get_jwt()
-    meraki_config = meraki.MerakiConfig()
+    meraki_config = meraki.MerakiConfig(auth=get_jwt())
     json_refer = []
 
     try:
