@@ -12,6 +12,10 @@ class MerakiConfig:
             self.org_id = auth_list[0]
             self.org_name = "Unspecified"
             self.api_key = auth_list[1]
+
+            self.mdashboard = meraki.DashboardAPI(self.api_key, print_console=False, suppress_logging=True,
+                                                  output_log=False,
+                                                  caller=config.meraki_user_agent)
         else:
             self.api_key = os.environ.get('meraki_api_key', '').lower()
             self.org_name = os.environ.get('meraki_org_name')
